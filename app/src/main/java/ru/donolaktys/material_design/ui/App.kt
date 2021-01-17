@@ -3,6 +3,7 @@ package ru.donolaktys.material_design.ui
 import android.app.Application
 import ru.donolaktys.material_design.di.AppComponent
 import ru.donolaktys.material_design.di.DaggerAppComponent
+import ru.donolaktys.material_design.di.modules.AppModule
 
 class App: Application() {
 
@@ -18,6 +19,7 @@ class App: Application() {
         instance = this
         _appComponent = DaggerAppComponent
             .builder()
+            .appModule(AppModule(this))
             .build()
     }
 }

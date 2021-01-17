@@ -3,7 +3,6 @@ package ru.donolaktys.material_design.ui.activity
 import android.os.Bundle
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
-import ru.donolaktys.material_design.R
 import ru.donolaktys.material_design.databinding.ActivityMainBinding
 import ru.donolaktys.material_design.mvp.presenter.MainPresenter
 import ru.donolaktys.material_design.mvp.view.IMainView
