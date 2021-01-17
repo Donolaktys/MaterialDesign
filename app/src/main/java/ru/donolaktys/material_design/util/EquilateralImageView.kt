@@ -11,6 +11,10 @@ class EquilateralImageView @JvmOverloads constructor(
 ) : AppCompatImageView(context, attrs, defStyleAttr) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec)
+        if (widthMeasureSpec < heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, widthMeasureSpec)
+        } else {
+            super.onMeasure(heightMeasureSpec, heightMeasureSpec)
+        }
     }
 }

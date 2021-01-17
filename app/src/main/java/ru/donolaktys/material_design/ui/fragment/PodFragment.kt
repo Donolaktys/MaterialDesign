@@ -3,17 +3,19 @@ package ru.donolaktys.material_design.ui.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import coil.api.load
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.donolaktys.material_design.R
 import ru.donolaktys.material_design.databinding.FragmentPodBinding
+import ru.donolaktys.material_design.mvp.model.entity.PODServerResponseData
 import ru.donolaktys.material_design.mvp.presenter.PodPresenter
 import ru.donolaktys.material_design.mvp.view.IPodView
 import ru.donolaktys.material_design.ui.App
@@ -22,7 +24,7 @@ import ru.donolaktys.material_design.ui.activity.MainActivity
 
 class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
 
-    lateinit var binding : FragmentPodBinding
+    private var binding: FragmentPodBinding? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     companion object {
@@ -40,21 +42,51 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPodBinding.inflate(inflater, container, false)
-        return binding.root
+        val view = binding?.root
+        init()
+        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setBottomSheetBehavior(view.findViewById(R.id.bottom_sheet_container))
-        init()
-        setBottomAppBar(view)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_bottom_bar, menu)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 
     override fun init() {
-        binding.inputLayout.setEndIconOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://en.wikipedia.org/wiki/${binding.inputEditText.text.toString()}")
-            })
+        binding?.let {
+            setBottomSheetBehavior(it.root.findViewById(R.id.bottom_sheet_container))
+            setBottomAppBar(it.root)
+            it.inputLayout.setEndIconOnClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://en.wikipedia.org/wiki/${binding?.inputEditText?.text.toString()}")
+                })
+            }
+        }
+    }
+
+    override fun onError(error: String) {
+        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSuccess(podData: PODServerResponseData) {
+        binding?.let { bind->
+            podData.url?.let {
+                bind.imageView.load(it) {
+                    error(R.drawable.ic_load_error_vector)
+                    placeholder(R.drawable.ic_no_photo_vector)
+                }
+            }
+            podData.title?.let {
+                bind.root.findViewById<TextView>(R.id.bottom_sheet_description_header).text = it
+            }
+            podData.explanation?.let {
+                bind.root.findViewById<TextView>(R.id.bottom_sheet_description).text = it
+            }
         }
     }
 
@@ -62,26 +94,40 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
         val context = activity as MainActivity
         context.setSupportActionBar(view.findViewById(R.id.bottom_app_bar))
         setHasOptionsMenu(true)
-        binding.fab.setOnClickListener {
+        binding?.fab?.setOnClickListener {
             if (isMain) {
                 isMain = false
-                binding.bottomAppBar.navigationIcon = null
-                binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
-                binding.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_back_fab))
-                binding.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
+                binding?.let {
+                    it.bottomAppBar.navigationIcon = null
+                    it.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+                    it.fab.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.ic_back_fab
+                        )
+                    )
+                    it.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
+                }
+
             } else {
                 isMain = true
-                binding.bottomAppBar.navigationIcon =
-                    ContextCompat.getDrawable(context, R.drawable.ic_hamburger_menu_bottom_bar)
-                binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-                binding.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_plus_fab))
-                binding.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
+                binding?.let {
+                    it.bottomAppBar.navigationIcon =
+                        ContextCompat.getDrawable(context, R.drawable.ic_hamburger_menu_bottom_bar)
+                    it.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+                    it.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_plus_fab
+                    )
+                    )
+                    it.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
+                }
+
             }
         }
     }
 
     private fun setBottomSheetBehavior(bottomSheet: ConstraintLayout) {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheetBehavior.setPeekHeight(350, false)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 

@@ -1,17 +1,35 @@
 package ru.donolaktys.material_design.mvp.presenter
 
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
+import ru.donolaktys.material_design.BuildConfig
+import ru.donolaktys.material_design.mvp.model.repo.IPodDataRepo
 import ru.donolaktys.material_design.mvp.view.IPodView
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class PodPresenter : MvpPresenter<IPodView>() {
 
-    @Inject
-    lateinit var router: Router
+    @Inject lateinit var router: Router
+
+    @Inject lateinit var podRepo : IPodDataRepo
+
+    @Inject lateinit var uiScheduler: Scheduler
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
+        val apiKey: String = BuildConfig.NASA_API_KEY
+        if (apiKey.isBlank()) {
+            viewState.onError("You need API key")
+        } else {
+            podRepo.getPictureOfTheDay(apiKey)
+                .observeOn(uiScheduler)
+                .subscribe({
+                    viewState.onSuccess(it)
+                }, { e ->
+                    viewState.onError(e.message.toString())
+                })
+        }
     }
 
     fun backClick() : Boolean{
