@@ -1,4 +1,4 @@
-package ru.donolaktys.material_design.util
+package ru.donolaktys.material_design.ui.image.util
 
 import android.content.Context
 import android.util.AttributeSet

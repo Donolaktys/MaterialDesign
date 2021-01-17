@@ -8,6 +8,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import coil.api.load
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -71,10 +73,22 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     override fun onSuccess(podData: PODServerResponseData) {
         binding?.let { bind->
             podData.url?.let {
-                bind.imageView.load(it) {
-                    error(R.drawable.ic_load_error_vector)
-                    placeholder(R.drawable.ic_no_photo_vector)
+                val mediaType = podData.mediaType
+                if (mediaType == "video") {
+                    bind.webView.clearCache(true)
+                    bind.webView.clearHistory()
+                    bind.webView.setVisibility(View.VISIBLE)
+                    bind.webView.settings.setJavaScriptEnabled(true)
+                    bind.webView.settings.setJavaScriptCanOpenWindowsAutomatically(true)
+                    bind.webView.loadUrl(it)
+                } else {
+                    bind.imageView.load(it) {
+                        bind.webView.setVisibility(View.GONE)
+                        error(R.drawable.ic_load_error_vector)
+                        placeholder(R.drawable.ic_no_photo_vector)
+                    }
                 }
+
             }
             podData.title?.let {
                 bind.root.findViewById<TextView>(R.id.bottom_sheet_description_header).text = it
