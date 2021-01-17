@@ -47,11 +47,6 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_bottom_bar, menu)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -130,6 +125,26 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
         bottomSheetBehavior.setPeekHeight(350, false)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_bottom_bar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.app_bar_fav -> toast("Favourite")
+            R.id.app_bar_settings -> toast("Settings")
+            android.R.id.home -> {
+                activity?.let {
+                    BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun toast(message: String) = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     override fun backPressed() = presenter.backClick()
 
