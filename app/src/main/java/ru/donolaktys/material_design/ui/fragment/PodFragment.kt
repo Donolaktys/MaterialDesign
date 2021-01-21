@@ -8,26 +8,38 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import coil.api.load
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.donolaktys.material_design.R
 import ru.donolaktys.material_design.databinding.FragmentPodBinding
+import ru.donolaktys.material_design.mvp.model.api.IPictureOfTheDayAPI
 import ru.donolaktys.material_design.mvp.model.entity.PODServerResponseData
+import ru.donolaktys.material_design.mvp.model.repo.retrofit.RetrofitPodDataRepo
 import ru.donolaktys.material_design.mvp.presenter.PodPresenter
 import ru.donolaktys.material_design.mvp.view.IPodView
 import ru.donolaktys.material_design.ui.App
 import ru.donolaktys.material_design.ui.BackButtonListener
 import ru.donolaktys.material_design.ui.activity.MainActivity
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
 
+    @Inject lateinit var router: Router
+    @Inject lateinit var api: IPictureOfTheDayAPI
+    @Inject lateinit var uiScheduler: Scheduler
+
+    init{
+        App.component.inject(this)
+    }
+
     private var binding: FragmentPodBinding? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    val podRepo = RetrofitPodDataRepo(api)
 
     companion object {
         fun newInstance() = PodFragment()
@@ -35,7 +47,7 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     }
 
     val presenter: PodPresenter by moxyPresenter {
-        PodPresenter().apply { App.component.inject(this) }
+        PodPresenter(router, podRepo, uiScheduler)
     }
 
     override fun onCreateView(
@@ -75,6 +87,7 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
             podData.url?.let {
                 val mediaType = podData.mediaType
                 if (mediaType == "video") {
+                    bind.imageView.setVisibility(View.GONE)
                     bind.webView.clearCache(true)
                     bind.webView.clearHistory()
                     bind.webView.setVisibility(View.VISIBLE)
@@ -82,8 +95,9 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
                     bind.webView.settings.setJavaScriptCanOpenWindowsAutomatically(true)
                     bind.webView.loadUrl(it)
                 } else {
+                    bind.webView.setVisibility(View.GONE)
+                    bind.imageView.setVisibility(View.VISIBLE)
                     bind.imageView.load(it) {
-                        bind.webView.setVisibility(View.GONE)
                         error(R.drawable.ic_load_error_vector)
                         placeholder(R.drawable.ic_no_photo_vector)
                     }

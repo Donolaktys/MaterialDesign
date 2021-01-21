@@ -9,27 +9,30 @@ import ru.donolaktys.material_design.mvp.view.IMainView
 import ru.donolaktys.material_design.ui.App
 import ru.donolaktys.material_design.ui.BackButtonListener
 import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity(), IMainView {
 
-    @Inject
-    lateinit var navigatorHolder : NavigatorHolder
+    @Inject lateinit var navigatorHolder : NavigatorHolder
+    @Inject lateinit var router: Router
 
+    init {
+        App.component.inject(this)
+    }
     private lateinit var binding : ActivityMainBinding
 
     val navigator by lazy { SupportAppNavigator(this, supportFragmentManager, binding.container.id) }
 
     private val presenter : MainPresenter by moxyPresenter {
-        MainPresenter().apply { App.component.inject( this )}
+        MainPresenter(router)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        App.component.inject(this)
     }
 
     override fun onResumeFragments() {
