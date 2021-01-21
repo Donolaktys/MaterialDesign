@@ -8,13 +8,7 @@ import ru.donolaktys.material_design.mvp.view.IPodView
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class PodPresenter : MvpPresenter<IPodView>() {
-
-    @Inject lateinit var router: Router
-
-    @Inject lateinit var podRepo : IPodDataRepo
-
-    @Inject lateinit var uiScheduler: Scheduler
+class PodPresenter @Inject constructor(val router: Router, val podRepo : IPodDataRepo, val uiScheduler: Scheduler) : MvpPresenter<IPodView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

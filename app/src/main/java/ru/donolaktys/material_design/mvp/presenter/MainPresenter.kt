@@ -6,10 +6,7 @@ import ru.donolaktys.material_design.navigation.Screens
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class MainPresenter : MvpPresenter<IMainView>() {
-
-    @Inject
-    lateinit var router: Router
+class MainPresenter @Inject constructor(val router: Router) : MvpPresenter<IMainView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
