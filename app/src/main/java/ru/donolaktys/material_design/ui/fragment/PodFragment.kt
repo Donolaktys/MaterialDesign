@@ -57,10 +57,13 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     ): View? {
         binding = FragmentPodBinding.inflate(inflater, container, false)
         val view = binding?.root
-        init()
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -151,7 +154,7 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     private fun setBottomSheetBehavior(bottomSheet: ConstraintLayout) {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.setPeekHeight(350, false)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
