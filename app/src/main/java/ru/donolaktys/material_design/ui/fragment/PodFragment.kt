@@ -16,9 +16,8 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.donolaktys.material_design.R
 import ru.donolaktys.material_design.databinding.FragmentPodBinding
-import ru.donolaktys.material_design.mvp.model.api.IPictureOfTheDayAPI
 import ru.donolaktys.material_design.mvp.model.entity.PODServerResponseData
-import ru.donolaktys.material_design.mvp.model.repo.retrofit.RetrofitPodDataRepo
+import ru.donolaktys.material_design.mvp.model.repo.IPodDataRepo
 import ru.donolaktys.material_design.mvp.presenter.PodPresenter
 import ru.donolaktys.material_design.mvp.view.IPodView
 import ru.donolaktys.material_design.ui.App
@@ -26,12 +25,14 @@ import ru.donolaktys.material_design.ui.BackButtonListener
 import ru.donolaktys.material_design.ui.activity.MainActivity
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
+import javax.inject.Provider
 
 class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
 
     @Inject lateinit var router: Router
-    @Inject lateinit var api: IPictureOfTheDayAPI
+    @Inject lateinit var podRepo: IPodDataRepo
     @Inject lateinit var uiScheduler: Scheduler
+    @Inject lateinit var routerProvider: Provider<PodPresenter>
 
     init{
         App.component.inject(this)
@@ -39,7 +40,6 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
 
     private var binding: FragmentPodBinding? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
-    val podRepo = RetrofitPodDataRepo(api)
 
     companion object {
         fun newInstance() = PodFragment()
@@ -47,7 +47,7 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     }
 
     val presenter: PodPresenter by moxyPresenter {
-        PodPresenter(router, podRepo, uiScheduler)
+        routerProvider.get()
     }
 
     override fun onCreateView(
