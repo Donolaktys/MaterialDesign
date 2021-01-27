@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
@@ -10,9 +10,9 @@
 
     <style name="OrangeTheme" parent="AppTheme">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#FF7943</item>
-        <item name="colorPrimaryDark">#A63F16</item>
-        <item name="colorAccent">#FFAF43</item>
-        <item name="colorError">#2FB179</item>
+        <item name="colorPrimary">#5B2B19</item>
+        <item name="colorPrimaryDark">#3B1608</item>
+        <item name="colorAccent">#5B3E19</item>
+        <item name="colorError">#A84D6A</item>
     </style>
 </resources>
