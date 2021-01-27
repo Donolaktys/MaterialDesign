@@ -29,12 +29,19 @@ import javax.inject.Provider
 
 class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
 
-    @Inject lateinit var router: Router
-    @Inject lateinit var podRepo: IPodDataRepo
-    @Inject lateinit var uiScheduler: Scheduler
-    @Inject lateinit var routerProvider: Provider<PodPresenter>
+    @Inject
+    lateinit var router: Router
 
-    init{
+    @Inject
+    lateinit var podRepo: IPodDataRepo
+
+    @Inject
+    lateinit var uiScheduler: Scheduler
+
+    @Inject
+    lateinit var routerProvider: Provider<PodPresenter>
+
+    init {
         App.component.inject(this)
     }
 
@@ -57,16 +64,13 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     ): View? {
         binding = FragmentPodBinding.inflate(inflater, container, false)
         val view = binding?.root
+        init()
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        init()
-    }
     override fun onDestroy() {
-        super.onDestroy()
         binding = null
+        super.onDestroy()
     }
 
     override fun init() {
@@ -75,7 +79,8 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
             setBottomAppBar(it.root)
             it.inputLayout.setEndIconOnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("https://en.wikipedia.org/wiki/${binding?.inputEditText?.text.toString()}")
+                    data =
+                        Uri.parse("https://en.wikipedia.org/wiki/${binding?.inputEditText?.text.toString()}")
                 })
             }
         }
@@ -86,7 +91,7 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     }
 
     override fun onSuccess(podData: PODServerResponseData) {
-        binding?.let { bind->
+        binding?.let { bind ->
             podData.url?.let {
                 val mediaType = podData.mediaType
                 if (mediaType == "video") {
@@ -141,8 +146,10 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
                     it.bottomAppBar.navigationIcon =
                         ContextCompat.getDrawable(context, R.drawable.ic_hamburger_menu_bottom_bar)
                     it.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-                    it.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_plus_fab
-                    )
+                    it.fab.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context, R.drawable.ic_plus_fab
+                        )
                     )
                     it.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
                 }
@@ -154,7 +161,7 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     private fun setBottomSheetBehavior(bottomSheet: ConstraintLayout) {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.setPeekHeight(350, false)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_DRAGGING
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -165,7 +172,7 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.app_bar_fav -> toast("Favourite")
-            R.id.app_bar_settings -> toast("Settings")
+            R.id.app_bar_settings -> presenter.toSettings()
             android.R.id.home -> {
                 activity?.let {
                     BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
@@ -175,7 +182,8 @@ class PodFragment : MvpAppCompatFragment(), IPodView, BackButtonListener {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun toast(message: String) = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun toast(message: String) =
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     override fun backPressed() = presenter.backClick()
 

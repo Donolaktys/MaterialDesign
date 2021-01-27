@@ -2,8 +2,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorError">@color/color_error</item>
+    </style>
+
+    <style name="OrangeTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#FF7943</item>
+        <item name="colorPrimaryDark">#A63F16</item>
+        <item name="colorAccent">#FFAF43</item>
+        <item name="colorError">#2FB179</item>
     </style>
 </resources>

@@ -5,6 +5,7 @@ import moxy.MvpPresenter
 import ru.donolaktys.material_design.BuildConfig
 import ru.donolaktys.material_design.mvp.model.repo.IPodDataRepo
 import ru.donolaktys.material_design.mvp.view.IPodView
+import ru.donolaktys.material_design.navigation.Screens
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -29,5 +30,9 @@ class PodPresenter @Inject constructor(val router: Router, val podRepo : IPodDat
     fun backClick() : Boolean{
         router.exit()
         return true
+    }
+
+    fun toSettings() {
+        router.navigateTo(Screens.SettingsScreen())
     }
 }
