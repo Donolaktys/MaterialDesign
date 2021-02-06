@@ -10,4 +10,24 @@
     <string name="to_screen_two">На экран 2</string>
     <string name="text_bottom_sheet_description_header">Two Clusters and a Comet</string>
     <string name="text_bottom_sheet_description">This lovely starfield spans some four full moons (about 2 degrees) across the heroic northern constellation of Perseus. In telescopic exposures made during the nights of January 24, 26, and 28 it holds the famous pair of open or galactic star clusters h and Chi Persei with comet PanSTARRS (C/2017 T2) captured each night as it swept left to right across the field of view. Also cataloged as NGC 869 (right) and NGC 884, both star clusters are about 7,000 light-years away and contain stars much younger and hotter than the Sun. Separated by only a few hundred light-years, the clusters are both 13 million years young based on the ages of their individual stars, evidence that they were likely a product of the same star-forming region. Discovered in 2017 while still beyond the orbit of Saturn, Comet PanSTARRs is a new visitor to the inner solar system and just over 13 light-minutes from planet Earth. Always a rewarding sight in binoculars, the Double Cluster is even visible to the unaided eye from dark locations. C/2017 T2 could remain a telescopic comet though. One of the brightest comets anticipated in 2020 it makes its closest approach to the Sun in early May.</string>
+    <!-- Theme radio buttons   -->
+    <string name="label_theme_1">Default Theme</string>
+    <string name="label_theme_2">Orange Theme</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="default_theme_name">AppTheme</string>
+    <string name="theme_preferences_key">ru.donolaktys.material_design.mvp.presenter.theme_preferences_const</string>
+    <string name="orange_theme_name">OrangeTheme</string>
 </resources>

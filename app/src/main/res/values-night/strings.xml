@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_theme_name">AppTheme</string>
+    <string name="theme_preferences_key">ru.donolaktys.material_design.mvp.presenter.theme_preferences_const</string>
+    <string name="orange_theme_name">OrangeTheme</string>
+</resources>
