@@ -9,9 +9,16 @@ import androidx.fragment.app.Fragment
 import ru.donolaktys.material_design.databinding.FragmentVideoBinding
 import ru.donolaktys.material_design.mvp.model.entity.PODServerResponseData
 
-class VideoFragment(val data: PODServerResponseData) : Fragment() {
+class VideoFragment() : Fragment() {
 
     var binding: FragmentVideoBinding? = null
+
+    companion object {
+        const val DATA_KEY = "DATA_KEY"
+        fun newInstance(data: PODServerResponseData) = VideoFragment().apply {
+            arguments = Bundle().apply { putParcelable(DATA_KEY, data) }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +36,7 @@ class VideoFragment(val data: PODServerResponseData) : Fragment() {
 
     @SuppressLint("SetJavaScriptEnabled")
     fun init() {
+        val data = arguments?.get(DATA_KEY) as PODServerResponseData
         binding?.let { bind ->
             data.url?.let {
                 val view = bind.webView

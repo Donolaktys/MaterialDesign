@@ -16,13 +16,13 @@ class ViewPagerAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 ->
-                if (data[2].mediaType == "image") { ImageFragment(data[2]) } else { VideoFragment(data[2]) }
+                if (data[2].mediaType == "image") { ImageFragment.newInstance(data[2]) } else { VideoFragment.newInstance(data[2]) }
             1 ->
-                if (data[1].mediaType == "image") { ImageFragment(data[1]) } else { VideoFragment(data[1]) }
+                if (data[1].mediaType == "image") { ImageFragment.newInstance(data[1]) } else { VideoFragment.newInstance(data[1]) }
             2 ->
-                if (data[0].mediaType == "image") { ImageFragment(data[0]) } else { VideoFragment(data[0]) }
+                if (data[0].mediaType == "image") { ImageFragment.newInstance(data[0]) } else { VideoFragment.newInstance(data[0]) }
             else ->
-                if (data[2].mediaType == "image") { ImageFragment(data[2]) } else { VideoFragment(data[2]) }
+                if (data[2].mediaType == "image") { ImageFragment.newInstance(data[2]) } else { VideoFragment.newInstance(data[2]) }
         }
     }
 

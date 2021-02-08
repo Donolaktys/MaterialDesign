@@ -10,9 +10,16 @@ import ru.donolaktys.material_design.R
 import ru.donolaktys.material_design.databinding.FragmentImageBinding
 import ru.donolaktys.material_design.mvp.model.entity.PODServerResponseData
 
-class ImageFragment(val data: PODServerResponseData) : Fragment() {
+class ImageFragment() : Fragment() {
 
     var binding: FragmentImageBinding? = null
+
+    companion object {
+        const val DATA_KEY = "DATA_KEY"
+        fun newInstance(data: PODServerResponseData) = ImageFragment().apply {
+            arguments = Bundle().apply { putParcelable(DATA_KEY, data) }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +36,7 @@ class ImageFragment(val data: PODServerResponseData) : Fragment() {
     }
 
     fun init() {
+        val data = arguments?.get(DATA_KEY) as PODServerResponseData
         binding?.let { bind ->
             data.url?.let {
                 bind.imageView.load(it) {
