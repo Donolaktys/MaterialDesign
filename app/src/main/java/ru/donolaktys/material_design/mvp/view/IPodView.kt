@@ -10,5 +10,5 @@ interface IPodView : MvpView {
     @AddToEndSingle
     fun onError(error : String)
     @AddToEndSingle
-    fun onSuccess(podData: PODServerResponseData)
+    fun onSuccess(podData: List<PODServerResponseData>)
 }

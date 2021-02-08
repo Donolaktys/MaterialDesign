@@ -11,6 +11,8 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.donolaktys.material_design.mvp.model.api.IPictureOfTheDayAPI
+import ru.donolaktys.material_design.mvp.model.api.IStartDate
+import ru.donolaktys.material_design.mvp.model.api.StartDate
 import ru.donolaktys.material_design.ui.image.PODInterceptor
 import javax.inject.Named
 import javax.inject.Singleton
@@ -49,4 +51,8 @@ class ApiModule {
             HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
+
+    @Singleton
+    @Provides
+    fun startDate() : IStartDate = StartDate()
 }

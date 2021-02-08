@@ -17,7 +17,7 @@ class PodPresenter @Inject constructor(val router: Router, val podRepo : IPodDat
         if (apiKey.isBlank()) {
             viewState.onError("You need API key")
         } else {
-            podRepo.getPictureOfTheDay(apiKey)
+            podRepo.getLastThreeDaysValue(apiKey)
                 .observeOn(uiScheduler)
                 .subscribe({
                     viewState.onSuccess(it)

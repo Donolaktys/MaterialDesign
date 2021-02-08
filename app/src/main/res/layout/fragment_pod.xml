@@ -4,10 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main"
             android:layout_width="match_parent"
@@ -27,7 +23,7 @@
                 app:endIconDrawable="@drawable/ic_wikipedia"
                 app:endIconMode="custom"
                 app:helperText="@string/wiki_helper_text"
-                app:layout_constraintBottom_toTopOf="@+id/image_view"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -38,35 +34,21 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <WebView
-                android:id="@+id/web_view"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/photo_of_the_day_stub"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/input_layout">
 
-            <ru.donolaktys.material_design.ui.image.util.EquilateralImageView
-                android:id="@+id/image_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/photo_of_the_day_stub"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_no_photo_vector" />
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/vp_tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.viewpager.widget.ViewPager>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <include layout="@layout/bottom_sheet_layout" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_app_bar"
@@ -78,15 +60,4 @@
         app:hideOnScroll="true"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/ic_hamburger_menu_bottom_bar" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorAccent"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:layout_anchor="@id/bottom_app_bar"
-        app:srcCompat="@drawable/ic_plus_fab"
-        app:tint="#FFFFFF" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

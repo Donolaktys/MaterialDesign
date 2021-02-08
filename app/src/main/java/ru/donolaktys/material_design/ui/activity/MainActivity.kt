@@ -57,7 +57,7 @@ class MainActivity : MvpAppCompatActivity(), IMainView {
     fun getPrefTheme(): String {
         val defValue = getString(R.string.default_theme_name)
         preferences = getPreferences(MODE_PRIVATE)
-        val theme: String = preferences?.getString(getString(R.string.theme_preferences_key), defValue) ?: defValue
+        val theme: String = preferences.getString(getString(R.string.theme_preferences_key), defValue) ?: defValue
         return theme
     }
 

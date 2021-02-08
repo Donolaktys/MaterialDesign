@@ -5,4 +5,6 @@ import ru.donolaktys.material_design.mvp.model.entity.PODServerResponseData
 
 interface IPodDataRepo {
     fun getPictureOfTheDay(apiKey : String) : Single<PODServerResponseData>
+
+    fun getLastThreeDaysValue(apiKey : String) : Single<List<PODServerResponseData>>
 }

@@ -24,7 +24,7 @@ class SettingsFragment : MvpAppCompatFragment(), ISettingsView, BackButtonListen
 
     @Inject
     lateinit var routerProvider: Provider<SettingsPresenter>
-    val preferences = activity?.getPreferences(MODE_PRIVATE)
+    val preferences by lazy { requireActivity().getPreferences(MODE_PRIVATE) }
 
     companion object {
         fun newInstance() = SettingsFragment()
@@ -55,7 +55,7 @@ class SettingsFragment : MvpAppCompatFragment(), ISettingsView, BackButtonListen
             preferences?.let {
                 when (checkedId) {
                     binding?.radioButtonTheme1?.id -> putPreferenceTheme("Default")
-                    binding?.radioButtonTheme1?.id -> putPreferenceTheme("Orange")
+                    binding?.radioButtonTheme2?.id -> putPreferenceTheme("Orange")
                 }
 
             }
@@ -87,14 +87,12 @@ class SettingsFragment : MvpAppCompatFragment(), ISettingsView, BackButtonListen
 
     private fun init() {
         val defValue = getString(R.string.default_theme_name)
-        if (preferences != null) {
-            val theme = preferences.getString(getString(R.string.theme_preferences_key), defValue)
-            if (theme != defValue) {
-                binding?.radioButtonTheme2?.setChecked(true)
-            } else {
-                return
-            }
-        } else { binding?.radioButtonTheme1?.setChecked(true) }
+        val theme = preferences?.getString(getString(R.string.theme_preferences_key), defValue)
+        if (theme == defValue) {
+            binding?.radioButtonTheme1?.setChecked(true)
+        } else {
+            binding?.radioButtonTheme2?.setChecked(true)
+        }
     }
 
     override fun backPressed() = presenter.backClick()
