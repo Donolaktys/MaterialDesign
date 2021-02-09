@@ -44,6 +44,7 @@ class VideoFragment() : Fragment() {
                 view.clearHistory()
                 view.settings.javaScriptEnabled = true
                 view.settings.javaScriptCanOpenWindowsAutomatically = true
+                view.settings.mediaPlaybackRequiresUserGesture = false;
                 view.loadUrl(it)
             }
             data.title?.let {
